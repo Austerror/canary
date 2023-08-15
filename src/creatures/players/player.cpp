@@ -1990,14 +1990,28 @@ void Player::setNextActionPushTask(SchedulerTask* task) {
 
 void Player::setNextPotionActionTask(SchedulerTask* task) {
 	if (actionPotionTaskEvent != 0) {
-		g_scheduler().stopEvent(actionPotionTaskEvent);
-		actionPotionTaskEvent = 0;
+ 			g_scheduler().stopEvent(actionPotionTaskEvent);
+			actionPotionTaskEvent = 0;
+		}
+
+		cancelPush();
+
+		if (task) {
+			actionPotionTaskEvent = g_scheduler().addEvent(task);
+			// resetIdleTime();
+		}
+	}
+
+void Player::setNextRuneActionTask(SchedulerTask* task) {
+	if (actionRuneTaskEvent != 0) {
+		g_scheduler().stopEvent(actionRuneTaskEvent);
+		actionRuneTaskEvent = 0;
 	}
 
 	cancelPush();
 
 	if (task) {
-		actionPotionTaskEvent = g_scheduler().addEvent(task);
+		actionRuneTaskEvent = g_scheduler().addEvent(task);
 		// resetIdleTime();
 	}
 }
